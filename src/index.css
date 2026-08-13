@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@variant dark (&:where(.dark, .dark *));
 
 @layer base {
   body {
@@ -18,14 +18,14 @@
 .dark ::-webkit-scrollbar-track {
   background: #090d16;
 }
-.light ::-webkit-scrollbar-track, ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
 .dark ::-webkit-scrollbar-thumb {
   background: #334155;
   border-radius: 9999px;
 }
-.light ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #94a3b8;
   border-radius: 9999px;
 }
