@@ -91,7 +91,7 @@ export const ProfilePage: React.FC = () => {
     <div className="space-y-6 max-w-4xl mx-auto pb-12">
       
       {/* 1. User Profile Card */}
-      <div className="theme-bg-card border theme-border rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6 shadow-md">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6 shadow-sm">
         <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
           <div className="relative">
             {user?.avatarUrl ? (
@@ -101,7 +101,7 @@ export const ProfilePage: React.FC = () => {
                 className="w-24 h-24 rounded-3xl object-cover ring-4 ring-emerald-500/30 shadow-md"
               />
             ) : (
-              <div className="w-24 h-24 rounded-3xl bg-slate-800 light:bg-slate-200 flex items-center justify-center text-slate-400">
+              <div className="w-24 h-24 rounded-3xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400">
                 <User className="w-10 h-10" />
               </div>
             )}
@@ -112,34 +112,34 @@ export const ProfilePage: React.FC = () => {
 
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-              <h2 className="text-xl sm:text-2xl font-black theme-text-primary">
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100">
                 {user?.name || 'Cazador Anónimo'}
               </h2>
-              <span className="bg-emerald-500/10 text-emerald-400 light:text-emerald-700 border border-emerald-500/20 text-[11px] font-bold px-2 py-0.5 rounded-lg">
+              <span className="bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 text-[11px] font-bold px-2 py-0.5 rounded-lg">
                 {user?.level || 'Colaborador Activo'}
               </span>
             </div>
 
-            <p className="text-xs theme-text-secondary font-semibold">
+            <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold">
               @{user?.username || 'invitado'}
             </p>
 
             {/* Windows 7 Password hint indicator */}
             {user?.passwordHint && (
-              <div className="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-400 light:text-amber-700 border border-amber-500/20 text-xs px-2.5 py-1 rounded-xl">
-                <HelpCircle className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-1.5 bg-amber-100 dark:bg-amber-500/10 text-amber-800 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20 text-xs px-2.5 py-1 rounded-xl">
+                <HelpCircle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span>Pista de clave: <strong>"{user.passwordHint}"</strong></span>
               </div>
             )}
 
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 pt-1 text-xs theme-text-secondary font-semibold">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 pt-1 text-xs text-slate-500 dark:text-slate-400 font-semibold">
               <span className="flex items-center gap-1.5">
                 <Tag className="w-4 h-4 text-emerald-500" />
-                <span><strong className="theme-text-primary">{user?.contributionsCount || priceEntries.length}</strong> aportaciones</span>
+                <span><strong className="text-slate-800 dark:text-slate-200">{user?.contributionsCount || priceEntries.length}</strong> aportaciones</span>
               </span>
               <span className="flex items-center gap-1.5">
-                <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                <span><strong className="theme-text-primary">{user?.ratingsCount || ratings.length}</strong> calificaciones</span>
+                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span><strong className="text-slate-800 dark:text-slate-200">{user?.ratingsCount || ratings.length}</strong> calificaciones</span>
               </span>
             </div>
           </div>
@@ -159,7 +159,7 @@ export const ProfilePage: React.FC = () => {
             <button
               type="button"
               onClick={logout}
-              className="flex items-center gap-1.5 px-4 py-2.5 theme-bg-card hover:bg-slate-800/40 light:hover:bg-slate-100 theme-text-secondary rounded-2xl text-xs font-semibold transition-colors border theme-border cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-2xl text-xs font-semibold transition-colors border border-slate-200 dark:border-slate-700 cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               <span>Cerrar Sesión</span>
@@ -169,16 +169,16 @@ export const ProfilePage: React.FC = () => {
       </div>
 
       {/* 2. Theme & Visual Mode Card */}
-      <div className="theme-bg-card border theme-border rounded-3xl p-6 flex items-center justify-between gap-4 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 flex items-center justify-between gap-4 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-2xl bg-indigo-100 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
             {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-amber-500" />}
           </div>
           <div>
-            <h3 className="text-base font-bold theme-text-primary">
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
               Tema Visual de la Aplicación
             </h3>
-            <p className="text-xs theme-text-secondary">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Actualmente activo: <strong>{theme === 'dark' ? 'Modo Oscuro (Dark)' : 'Modo Claro (Light)'}</strong>
             </p>
           </div>
@@ -187,7 +187,7 @@ export const ProfilePage: React.FC = () => {
         <button
           type="button"
           onClick={toggleTheme}
-          className="flex items-center gap-2 px-4 py-2.5 theme-bg-card hover:bg-slate-800/40 light:hover:bg-slate-100 theme-text-primary rounded-2xl text-xs font-bold transition-all border theme-border shadow-sm cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-2xl text-xs font-bold transition-all border border-slate-300 dark:border-slate-700 shadow-sm cursor-pointer"
         >
           {theme === 'dark' ? (
             <>
@@ -203,23 +203,23 @@ export const ProfilePage: React.FC = () => {
         </button>
       </div>
 
-      {/* 3. Live Supabase Connection Card (Clean - Without Tutorial Text) */}
-      <div className="theme-bg-card border theme-border rounded-3xl p-6 space-y-4 shadow-sm">
+      {/* 3. Live Supabase Connection Card */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${isCloudActive ? 'bg-emerald-500/20 text-emerald-500' : 'bg-amber-500/20 text-amber-500'}`}>
+            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${isCloudActive ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' : 'bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400'}`}>
               <Cloud className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold theme-text-primary">
+                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
                   Estado de Conexión en la Nube (Supabase)
                 </h3>
-                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${isCloudActive ? 'bg-emerald-500/15 text-emerald-500 border border-emerald-500/30' : 'bg-amber-500/15 text-amber-500 border border-amber-500/30'}`}>
+                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${isCloudActive ? 'bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-500/30' : 'bg-amber-100 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-500/30'}`}>
                   {isCloudActive ? '🟢 Configurado en .env' : '💾 Modo Local'}
                 </span>
               </div>
-              <p className="text-xs theme-text-secondary mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 {supabaseUrl ? `URL: ${supabaseUrl}` : 'Sin archivo .env configurado'}
               </p>
             </div>
@@ -250,15 +250,15 @@ export const ProfilePage: React.FC = () => {
           <div
             className={`p-4 rounded-2xl border text-xs space-y-1.5 animate-in fade-in ${
               cloudTestResult.success
-                ? 'bg-emerald-950/30 light:bg-emerald-50 border-emerald-500/40 text-emerald-300 light:text-emerald-800'
-                : 'bg-rose-950/30 light:bg-rose-50 border-rose-500/40 text-rose-300 light:text-rose-800'
+                ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-500/40 text-emerald-800 dark:text-emerald-300'
+                : 'bg-rose-50 dark:bg-rose-950/30 border-rose-300 dark:border-rose-500/40 text-rose-800 dark:text-rose-300'
             }`}
           >
             <div className="flex items-center gap-2 font-bold text-sm">
               {cloudTestResult.success ? (
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               ) : (
-                <AlertTriangle className="w-4 h-4 text-rose-500" />
+                <AlertTriangle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
               )}
               <span>{cloudTestResult.success ? 'Conexión Exitosa con Supabase' : 'Aviso de Conexión'}</span>
             </div>
@@ -273,10 +273,10 @@ export const ProfilePage: React.FC = () => {
       </div>
 
       {/* 4. Data Management & Backups */}
-      <div className="theme-bg-card border theme-border rounded-3xl p-6 space-y-4 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 space-y-4 shadow-sm">
         <div className="flex items-center gap-2">
           <Database className="w-5 h-5 text-emerald-500" />
-          <h3 className="text-base font-bold theme-text-primary">
+          <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
             Administración de Datos Locales
           </h3>
         </div>
@@ -285,7 +285,7 @@ export const ProfilePage: React.FC = () => {
           <button
             type="button"
             onClick={handleExportData}
-            className="flex items-center gap-2 px-4 py-2.5 theme-bg-card hover:bg-slate-800/40 light:hover:bg-slate-100 theme-text-primary rounded-2xl text-xs font-semibold transition-colors border theme-border cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-2xl text-xs font-semibold transition-colors border border-slate-200 dark:border-slate-700 cursor-pointer"
           >
             <Download className="w-4 h-4 text-emerald-500" />
             <span>Exportar Copia de Seguridad JSON</span>
@@ -295,15 +295,15 @@ export const ProfilePage: React.FC = () => {
             type="button"
             onClick={handleReset}
             disabled={isResetting}
-            className="flex items-center gap-2 px-4 py-2.5 bg-rose-950/30 light:bg-rose-50 hover:bg-rose-900/40 text-rose-400 light:text-rose-700 border border-rose-500/30 rounded-2xl text-xs font-semibold transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2.5 bg-rose-50 dark:bg-rose-950/30 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30 rounded-2xl text-xs font-semibold transition-colors cursor-pointer"
           >
-            <RotateCcw className="w-4 h-4 text-rose-400" />
+            <RotateCcw className="w-4 h-4 text-rose-500" />
             <span>{isResetting ? 'Restableciendo...' : 'Restablecer Datos de Muestra'}</span>
           </button>
         </div>
 
         {resetSuccess && (
-          <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl text-xs text-emerald-400 light:text-emerald-700 flex items-center gap-2">
+          <div className="p-3 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 rounded-2xl text-xs text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4" />
             <span>Datos restablecidos con éxito.</span>
           </div>

@@ -41,7 +41,7 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen theme-bg-app theme-text-primary flex flex-col selection:bg-emerald-500 selection:text-white transition-colors">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col selection:bg-emerald-500 selection:text-white transition-colors">
       {/* Header for Desktop and Mobile */}
       <Header currentTab={currentTab} onTabChange={setCurrentTab} />
 

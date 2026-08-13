@@ -23,16 +23,16 @@ export const StoresPage: React.FC<StoresPageProps> = ({ onSelectStoreFilter }) =
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 theme-bg-card p-6 rounded-3xl border theme-border shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
         <div>
-          <div className="flex items-center gap-2 text-blue-500 text-xs font-bold mb-1">
+          <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-xs font-bold mb-1">
             <Store className="w-4 h-4" />
             <span>Directorio de Comercios</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black theme-text-primary">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100">
             Tiendas Físicas y Digitales Monitoreadas
           </h2>
-          <p className="text-xs theme-text-secondary mt-0.5 font-medium">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-medium">
             Registra y consulta supermercados locales, tienditas de la esquina o tiendas online
           </p>
         </div>
@@ -50,13 +50,13 @@ export const StoresPage: React.FC<StoresPageProps> = ({ onSelectStoreFilter }) =
       {/* Filter and Search */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 theme-text-secondary" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar tienda por nombre o sucursal..."
-            className="w-full theme-bg-input border theme-border rounded-2xl pl-10 pr-4 py-3 text-xs sm:text-sm theme-text-primary placeholder:text-slate-400 focus:outline-none focus:border-blue-500 shadow-sm"
+            className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-2xl pl-10 pr-4 py-3 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 shadow-sm"
           />
         </div>
 
@@ -66,8 +66,8 @@ export const StoresPage: React.FC<StoresPageProps> = ({ onSelectStoreFilter }) =
             onClick={() => setFilterType('all')}
             className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all ${
               filterType === 'all'
-                ? 'bg-slate-900 text-white light:bg-slate-900 light:text-white shadow-sm'
-                : 'theme-bg-card theme-text-secondary border theme-border'
+                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 shadow-sm'
+                : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'
             }`}
           >
             Todas ({stores.length})
@@ -78,7 +78,7 @@ export const StoresPage: React.FC<StoresPageProps> = ({ onSelectStoreFilter }) =
             className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               filterType === 'physical'
                 ? 'bg-blue-600 text-white shadow-md'
-                : 'theme-bg-card theme-text-secondary border theme-border'
+                : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'
             }`}
           >
             <MapPin className="w-3.5 h-3.5" />
@@ -90,7 +90,7 @@ export const StoresPage: React.FC<StoresPageProps> = ({ onSelectStoreFilter }) =
             className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 ${
               filterType === 'digital'
                 ? 'bg-indigo-600 text-white shadow-md'
-                : 'theme-bg-card theme-text-secondary border theme-border'
+                : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'
             }`}
           >
             <Globe className="w-3.5 h-3.5" />

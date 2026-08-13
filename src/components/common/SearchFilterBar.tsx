@@ -53,19 +53,19 @@ export const SearchFilterBar: React.FC = () => {
       {/* 1. Main Search Bar & Quick Action */}
       <div className="flex flex-col sm:flex-row gap-3 items-stretch">
         <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 theme-text-secondary" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Buscar producto, marca, tienda o categoría (ej. Papel, Nutrioli, Aurrera)..."
-            className="w-full theme-bg-input border theme-border rounded-2xl pl-11 pr-10 py-3.5 text-sm theme-text-primary placeholder:text-slate-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-sm transition-all"
+            className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-2xl pl-11 pr-10 py-3.5 text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-sm transition-all"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 theme-text-secondary hover:theme-text-primary"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
             >
               <X className="w-4 h-4" />
             </button>
@@ -79,7 +79,7 @@ export const SearchFilterBar: React.FC = () => {
             <select
               value={selectedStoreId}
               onChange={(e) => setSelectedStoreId(e.target.value)}
-              className="appearance-none theme-bg-input border theme-border rounded-2xl pl-9 pr-8 py-3.5 text-xs sm:text-sm font-medium theme-text-primary focus:outline-none focus:border-emerald-500 cursor-pointer h-full shadow-sm"
+              className="appearance-none bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-2xl pl-9 pr-8 py-3.5 text-xs sm:text-sm font-medium text-slate-900 dark:text-slate-100 focus:outline-none focus:border-emerald-500 cursor-pointer h-full shadow-sm"
             >
               <option value="all">Todas las Tiendas</option>
               <optgroup label="Tiendas Físicas">
@@ -101,7 +101,7 @@ export const SearchFilterBar: React.FC = () => {
                   ))}
               </optgroup>
             </select>
-            <StoreIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 theme-text-secondary pointer-events-none" />
+            <StoreIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           </div>
 
           {/* Sort Selector */}
@@ -109,7 +109,7 @@ export const SearchFilterBar: React.FC = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="appearance-none theme-bg-input border theme-border rounded-2xl pl-9 pr-8 py-3.5 text-xs sm:text-sm font-medium theme-text-primary focus:outline-none focus:border-emerald-500 cursor-pointer h-full shadow-sm"
+              className="appearance-none bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-2xl pl-9 pr-8 py-3.5 text-xs sm:text-sm font-medium text-slate-900 dark:text-slate-100 focus:outline-none focus:border-emerald-500 cursor-pointer h-full shadow-sm"
             >
               <option value="cheapest">💲 Más barato</option>
               <option value="quality">⭐ Mejor calificado</option>
@@ -117,7 +117,7 @@ export const SearchFilterBar: React.FC = () => {
               <option value="rating_count">👥 Más valorados</option>
               <option value="alphabetical">🔤 Nombre A-Z</option>
             </select>
-            <ArrowDownUp className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 theme-text-secondary pointer-events-none" />
+            <ArrowDownUp className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
           </div>
         </div>
       </div>
@@ -129,8 +129,8 @@ export const SearchFilterBar: React.FC = () => {
           onClick={() => setSelectedBadge('all')}
           className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
             selectedBadge === 'all' && !onlyOffers && !onlyInStock
-              ? 'bg-slate-900 text-white light:bg-slate-900 light:text-white shadow-md scale-105'
-              : 'theme-bg-card theme-text-secondary hover:theme-text-primary border theme-border'
+              ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 shadow-md scale-105'
+              : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-800'
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -143,7 +143,7 @@ export const SearchFilterBar: React.FC = () => {
           className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
             selectedBadge === 'bbb'
               ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/25 scale-105 font-bold'
-              : 'bg-emerald-500/10 text-emerald-600 light:text-emerald-700 border border-emerald-500/30'
+              : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-500/30'
           }`}
         >
           <Sparkles className="w-3.5 h-3.5" />
@@ -156,7 +156,7 @@ export const SearchFilterBar: React.FC = () => {
           className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
             selectedBadge === 'cheapest'
               ? 'bg-amber-400 text-slate-950 shadow-lg shadow-amber-400/25 scale-105 font-bold'
-              : 'bg-amber-500/10 text-amber-600 light:text-amber-700 border border-amber-500/30'
+              : 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-500/30'
           }`}
         >
           <Coins className="w-3.5 h-3.5" />
@@ -169,7 +169,7 @@ export const SearchFilterBar: React.FC = () => {
           className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
             selectedBadge === 'top_quality'
               ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/25 scale-105 font-bold'
-              : 'bg-purple-500/10 text-purple-600 light:text-purple-700 border border-purple-500/30'
+              : 'bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 border border-purple-300 dark:border-purple-500/30'
           }`}
         >
           <Crown className="w-3.5 h-3.5" />
@@ -182,7 +182,7 @@ export const SearchFilterBar: React.FC = () => {
           className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
             onlyOffers
               ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/25 scale-105 font-bold'
-              : 'bg-rose-500/10 text-rose-600 light:text-rose-700 border border-rose-500/30'
+              : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border border-rose-300 dark:border-rose-500/30'
           }`}
         >
           <Flame className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
@@ -195,7 +195,7 @@ export const SearchFilterBar: React.FC = () => {
           className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
             onlyInStock
               ? 'bg-sky-500 text-slate-950 font-semibold'
-              : 'theme-bg-card theme-text-secondary border theme-border'
+              : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800'
           }`}
         >
           <CheckCircle2 className="w-3.5 h-3.5" />
@@ -211,7 +211,7 @@ export const SearchFilterBar: React.FC = () => {
           className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-medium transition-colors ${
             selectedCategory === 'Todas'
               ? 'bg-emerald-600 text-white font-semibold shadow-sm'
-              : 'theme-bg-card theme-text-secondary hover:theme-text-primary border theme-border'
+              : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
           }`}
         >
           Todas las Categorías
@@ -224,7 +224,7 @@ export const SearchFilterBar: React.FC = () => {
             className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-medium transition-colors whitespace-nowrap ${
               selectedCategory === cat
                 ? 'bg-emerald-600 text-white font-semibold shadow-sm'
-                : 'theme-bg-card theme-text-secondary hover:theme-text-primary border theme-border'
+                : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
             }`}
           >
             {cat}
