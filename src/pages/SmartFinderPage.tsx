@@ -1,10 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   Sparkles,
   Coins,
   Crown,
   Star,
   Store,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { ALL_PRODUCT_CATEGORIES, ProductCategory } from '../types/product';
 import { useAppData } from '../context/AppDataContext';
@@ -26,6 +28,37 @@ export const SmartFinderPage: React.FC<SmartFinderPageProps> = ({ onSelectStoreF
   } = useAppData();
 
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>('Higiene y Cuidado Personal');
+  const catScrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (catScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = catScrollRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (catScrollRef.current) {
+      const scrollAmount = direction === 'left' ? -320 : 320;
+      catScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (catScrollRef.current && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      e.preventDefault();
+      catScrollRef.current.scrollLeft += e.deltaY;
+    }
+  };
 
   // Filter products in selected category
   const categoryStats = useMemo(() => {
@@ -89,26 +122,56 @@ export const SmartFinderPage: React.FC<SmartFinderPageProps> = ({ onSelectStoreF
         </div>
       </div>
 
-      {/* Category Tabs Selector */}
+      {/* Category Tabs Selector with Scroll Arrows & Wheel Scrolling */}
       <div className="space-y-2">
         <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">
           Selecciona una categoría para comparar:
         </label>
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
-          {ALL_PRODUCT_CATEGORIES.map((cat) => (
+        <div className="relative group">
+          {canScrollLeft && (
             <button
-              key={cat}
               type="button"
-              onClick={() => setSelectedCategory(cat)}
-              className={`shrink-0 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                selectedCategory === cat
-                  ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30 scale-105'
-                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
-              }`}
+              onClick={() => scroll('left')}
+              className="absolute -left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-full flex items-center justify-center text-purple-600 dark:text-purple-400 shadow-lg hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer transition-all hover:scale-110"
+              title="Ver categorías anteriores"
             >
-              {cat}
+              <ChevronLeft className="w-5 h-5" />
             </button>
-          ))}
+          )}
+
+          {canScrollRight && (
+            <button
+              type="button"
+              onClick={() => scroll('right')}
+              className="absolute -right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-full flex items-center justify-center text-purple-600 dark:text-purple-400 shadow-lg hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer transition-all hover:scale-110"
+              title="Ver más categorías"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          )}
+
+          <div
+            ref={catScrollRef}
+            onScroll={checkScroll}
+            onWheel={handleWheel}
+            className="flex items-center gap-2 overflow-x-auto scroll-smooth pb-2 pt-1 px-1"
+            style={{ scrollbarWidth: 'thin' }}
+          >
+            {ALL_PRODUCT_CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(cat)}
+                className={`shrink-0 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+                  selectedCategory === cat
+                    ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30 scale-105'
+                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
