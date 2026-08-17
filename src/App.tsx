@@ -56,7 +56,9 @@ const AppContent: React.FC = () => {
 
         {currentTab === 'deals' && <DealsPage />}
 
-        {currentTab === 'smart_finder' && <SmartFinderPage />}
+        {currentTab === 'smart_finder' && (
+          <SmartFinderPage onSelectStoreFilter={handleSelectStoreFilter} />
+        )}
 
         {currentTab === 'stores' && (
           <StoresPage onSelectStoreFilter={handleSelectStoreFilter} />
@@ -73,6 +75,7 @@ const AppContent: React.FC = () => {
         <ProductDetailModal
           stats={selectedProductForDetail}
           onClose={() => setSelectedProductForDetail(null)}
+          onSelectStoreFilter={handleSelectStoreFilter}
         />
       )}
 

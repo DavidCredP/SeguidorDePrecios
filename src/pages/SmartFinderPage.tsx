@@ -10,12 +10,18 @@ import { ALL_PRODUCT_CATEGORIES, ProductCategory } from '../types/product';
 import { useAppData } from '../context/AppDataContext';
 import { formatCurrency, formatUnitCost } from '../utils/formatters';
 
-export const SmartFinderPage: React.FC = () => {
+interface SmartFinderPageProps {
+  onSelectStoreFilter?: (storeId: string) => void;
+}
+
+export const SmartFinderPage: React.FC<SmartFinderPageProps> = ({ onSelectStoreFilter }) => {
   const {
     enrichedStats,
     setSelectedProductForDetail,
     setModalTargetProduct,
     setIsRateProductOpen,
+    getProductPrices,
+    setSelectedStoreId,
     products,
   } = useAppData();
 
@@ -51,6 +57,18 @@ export const SmartFinderPage: React.FC = () => {
     }
   };
 
+  const handleStoreClick = (productId: string) => {
+    const pPrices = getProductPrices(productId);
+    if (pPrices.length > 0) {
+      const best = pPrices.reduce((prev, curr) => (curr.effectivePrice < prev.effectivePrice ? curr : prev));
+      if (best && onSelectStoreFilter) {
+        onSelectStoreFilter(best.storeId);
+      } else if (best) {
+        setSelectedStoreId(best.storeId);
+      }
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -82,7 +100,7 @@ export const SmartFinderPage: React.FC = () => {
               key={cat}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`shrink-0 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all ${
+              className={`shrink-0 px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 selectedCategory === cat
                   ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30 scale-105'
                   : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'
@@ -154,10 +172,15 @@ export const SmartFinderPage: React.FC = () => {
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                      <span className="flex items-center gap-1 truncate text-[11px]">
+                      <button
+                        type="button"
+                        onClick={() => handleStoreClick(cheapestItem.productId)}
+                        className="flex items-center gap-1 truncate text-[11px] hover:text-emerald-600 dark:hover:text-emerald-400 text-left cursor-pointer group"
+                        title="Ver todos los productos de esta tienda"
+                      >
                         <Store className="w-3 h-3 text-slate-400" />
-                        <span className="truncate text-slate-800 dark:text-slate-200 font-medium">{cheapestItem.lowestPriceStoreName}</span>
-                      </span>
+                        <span className="truncate text-slate-800 dark:text-slate-200 font-medium group-hover:underline">{cheapestItem.lowestPriceStoreName}</span>
+                      </button>
                       <span className="text-[10px] text-amber-700 dark:text-amber-400 font-bold bg-amber-100 dark:bg-amber-500/10 px-2 py-0.5 rounded-md">
                         {formatUnitCost(
                           cheapestItem.lowestPrice,
@@ -268,10 +291,15 @@ export const SmartFinderPage: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                      <span className="flex items-center gap-1 truncate text-[11px]">
+                      <button
+                        type="button"
+                        onClick={() => handleStoreClick(bbbItem.productId)}
+                        className="flex items-center gap-1 truncate text-[11px] hover:text-emerald-600 dark:hover:text-emerald-400 text-left cursor-pointer group"
+                        title="Ver todos los productos de esta tienda"
+                      >
                         <Store className="w-3 h-3 text-slate-400" />
-                        <span className="truncate text-slate-800 dark:text-slate-200 font-medium">{bbbItem.lowestPriceStoreName}</span>
-                      </span>
+                        <span className="truncate text-slate-800 dark:text-slate-200 font-medium group-hover:underline">{bbbItem.lowestPriceStoreName}</span>
+                      </button>
                       <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
                         <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
                         <span>{bbbItem.averageQuality > 0 ? bbbItem.averageQuality : '4.5'}★</span>
@@ -369,10 +397,15 @@ export const SmartFinderPage: React.FC = () => {
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-                      <span className="flex items-center gap-1 truncate text-[11px]">
+                      <button
+                        type="button"
+                        onClick={() => handleStoreClick(topQualityItem.productId)}
+                        className="flex items-center gap-1 truncate text-[11px] hover:text-emerald-600 dark:hover:text-emerald-400 text-left cursor-pointer group"
+                        title="Ver todos los productos de esta tienda"
+                      >
                         <Store className="w-3 h-3 text-slate-400" />
-                        <span className="truncate text-slate-800 dark:text-slate-200 font-medium">{topQualityItem.lowestPriceStoreName}</span>
-                      </span>
+                        <span className="truncate text-slate-800 dark:text-slate-200 font-medium group-hover:underline">{topQualityItem.lowestPriceStoreName}</span>
+                      </button>
                       <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
                         <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
                         <span>{topQualityItem.averageQuality}★</span>
