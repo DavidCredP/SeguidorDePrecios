@@ -12,6 +12,7 @@ import {
   Share2,
   TrendingDown,
   Info,
+  ArrowRight,
 } from 'lucide-react';
 import { IProductEnrichedStats } from '../../types/smartBadges';
 import { formatCurrency, formatRelativeTime, getDaysLeftUntil } from '../../utils/formatters';
@@ -22,9 +23,14 @@ import { useAppData } from '../../context/AppDataContext';
 interface ProductDetailModalProps {
   stats: IProductEnrichedStats;
   onClose: () => void;
+  onSelectStoreFilter?: (storeId: string) => void;
 }
 
-export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, onClose }) => {
+export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
+  stats,
+  onClose,
+  onSelectStoreFilter,
+}) => {
   const {
     getProductPrices,
     getProductRatings,
@@ -32,6 +38,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
     setModalTargetProduct,
     setIsAddPriceOpen,
     setIsRateProductOpen,
+    setSelectedStoreId,
     products,
   } = useAppData();
 
@@ -54,6 +61,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
       setModalTargetProduct(originalProduct);
       setIsRateProductOpen(true);
     }
+  };
+
+  const handleStoreClick = (storeId: string) => {
+    setSelectedStoreId(storeId);
+    if (onSelectStoreFilter) {
+      onSelectStoreFilter(storeId);
+    }
+    onClose();
   };
 
   const handleShare = async () => {
@@ -153,7 +168,18 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
                 {formatCurrency(stats.lowestPrice)}
               </span>
               <span className="text-xs text-slate-600 dark:text-slate-300 font-medium">
-                en <strong className="text-slate-900 dark:text-white">{stats.lowestPriceStoreName}</strong>
+                en{' '}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const priceMatch = prices.find((p) => p.effectivePrice === stats.lowestPrice);
+                    if (priceMatch) handleStoreClick(priceMatch.storeId);
+                  }}
+                  className="font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 underline decoration-dotted cursor-pointer"
+                  title="Ver todos los productos en esta tienda"
+                >
+                  {stats.lowestPriceStoreName} ➔
+                </button>
               </span>
             </div>
           </div>
@@ -178,7 +204,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
             onClick={() => setActiveTab('prices')}
             className={`py-3 px-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === 'prices'
-                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 font-black'
                 : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -189,7 +215,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
             onClick={() => setActiveTab('chart')}
             className={`py-3 px-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === 'chart'
-                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 font-black'
                 : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -200,7 +226,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
             onClick={() => setActiveTab('reviews')}
             className={`py-3 px-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === 'reviews'
-                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 font-black'
                 : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -221,7 +247,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
                   <button
                     type="button"
                     onClick={handleAddPrice}
-                    className="px-4 py-2 bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs"
+                    className="px-4 py-2 bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs cursor-pointer"
                   >
                     Registrar el primer precio
                   </button>
@@ -236,16 +262,23 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
                       key={price.id}
                       className={`p-4 rounded-2xl border transition-all ${
                         isCheapest
-                          ? 'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-400 dark:border-emerald-500/40 ring-1 ring-emerald-500/20'
+                          ? 'bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-400 dark:border-emerald-500/40 ring-1 ring-emerald-500/20 shadow-sm'
                           : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
                       }`}
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-sm text-slate-900 dark:text-slate-100">
-                              {price.storeName}
-                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleStoreClick(price.storeId)}
+                              className="font-bold text-sm text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 flex items-center gap-1 text-left cursor-pointer group"
+                              title="Ver todos los productos disponibles en esta tienda"
+                            >
+                              <span>{price.storeName}</span>
+                              <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </button>
+
                             <span
                               className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
                                 price.storeType === 'physical'
@@ -308,7 +341,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
                             <button
                               type="button"
                               onClick={() => setSelectedPhotoEvidence(price.evidencePhotoUrl || null)}
-                              className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 hover:underline font-semibold bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-lg border border-emerald-200 dark:border-emerald-500/20"
+                              className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 hover:underline font-semibold bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-lg border border-emerald-200 dark:border-emerald-500/20 cursor-pointer"
                             >
                               <Camera className="w-3 h-3" />
                               <span>Ver Foto Etiqueta</span>
@@ -316,29 +349,41 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
                           )}
                         </div>
 
-                        {/* Stock toggle button */}
-                        <button
-                          type="button"
-                          onClick={() => toggleStockStatus(price.id, price.inStock)}
-                          className={`flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold transition-all ${
-                            price.inStock
-                              ? 'bg-emerald-100 dark:bg-emerald-500/10 hover:bg-rose-100 text-emerald-700 dark:text-emerald-400 hover:text-rose-700 border border-emerald-200 dark:border-emerald-500/30'
-                              : 'bg-rose-100 dark:bg-rose-500/10 hover:bg-emerald-100 text-rose-700 dark:text-rose-400 hover:text-emerald-700 border border-rose-200 dark:border-rose-500/30'
-                          }`}
-                          title="Haz clic para reportar si se agotó o volvió a haber stock"
-                        >
-                          {price.inStock ? (
-                            <>
-                              <CheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                              <span>En Stock (Marcar agotado)</span>
-                            </>
-                          ) : (
-                            <>
-                              <AlertCircle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
-                              <span>Agotado (Marcar disponible)</span>
-                            </>
-                          )}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleStoreClick(price.storeId)}
+                            className="px-2.5 py-1 text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 rounded-xl border border-blue-200 dark:border-blue-800 font-semibold flex items-center gap-1 cursor-pointer"
+                            title="Ver todos los productos de esta tienda"
+                          >
+                            <Store className="w-3 h-3" />
+                            <span>Ver catálogo</span>
+                          </button>
+
+                          {/* Stock toggle button */}
+                          <button
+                            type="button"
+                            onClick={() => toggleStockStatus(price.id, price.inStock)}
+                            className={`flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                              price.inStock
+                                ? 'bg-emerald-100 dark:bg-emerald-500/10 hover:bg-rose-100 text-emerald-700 dark:text-emerald-400 hover:text-rose-700 border border-emerald-200 dark:border-emerald-500/30'
+                                : 'bg-rose-100 dark:bg-rose-500/10 hover:bg-emerald-100 text-rose-700 dark:text-rose-400 hover:text-emerald-700 border border-rose-200 dark:border-rose-500/30'
+                            }`}
+                            title="Haz clic para reportar si se agotó o volvió a haber stock"
+                          >
+                            {price.inStock ? (
+                              <>
+                                <CheckCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                                <span>En Stock (Marcar agotado)</span>
+                              </>
+                            ) : (
+                              <>
+                                <AlertCircle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                                <span>Agotado (Marcar disponible)</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );
@@ -358,13 +403,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
                   prices={prices}
                   unitQuantity={stats.unitQuantity}
                   unitMeasure={stats.unitMeasure}
+                  onSelectStoreFilter={(storeId) => handleStoreClick(storeId)}
                 />
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex items-start gap-3 text-xs text-slate-600 dark:text-slate-300">
                 <Info className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                 <p>
-                  Los precios son actualizados colaborativamente por los miembros del grupo. Si ves un cambio de precio o una oferta en el supermercado, puedes registrar una nueva etiqueta con foto.
+                  Los precios son actualizados colaborativamente por los miembros del grupo. Haz clic en "Ver tienda" o en el nombre de la tienda para explorar todos sus productos.
                 </p>
               </div>
             </div>
@@ -492,7 +538,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ stats, o
             <button
               type="button"
               onClick={() => setSelectedPhotoEvidence(null)}
-              className="absolute top-4 right-4 p-2 bg-slate-950/80 text-white rounded-full hover:bg-rose-600 transition-colors z-10"
+              className="absolute top-4 right-4 p-2 bg-slate-950/80 text-white rounded-full hover:bg-rose-600 transition-colors z-10 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
